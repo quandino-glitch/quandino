@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Dỗ Kmmy 💖</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: url("tải xuống.jfif") no-repeat center center/cover;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      text-align: center;
+      height: 100vh;
+      overflow: hidden;
+      color: #fff;
+    }
+    h1 {
+      margin-top: 100px;
+      font-size: 3em;
+      text-shadow: 2px 2px 5px #000;
+    }
+    p {
+      font-size: 1.5em;
+      text-shadow: 1px 1px 3px #000;
+    }
+    p.apology {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #ffcccc;
+      text-shadow: 1px 1px 3px #000;
+    }
+    button {
+      background: #ff6699;
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+    button:hover {
+      background: #ff3366;
+      transform: scale(1.1);
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+    img.sticker {
+      position: fixed;
+      width: 80px;
+      pointer-events: none;
+      opacity: 1;
+      transition: transform 2s linear, opacity 2s linear;
+    }
+  </style>
+</head>
+<body>
+  <h1>🥺 Đừng giận anh nữa nha Kmmy!</h1>
+  <p>Anh xin lỗi... Anh thương Kmmy nhiều lắm 💕</p>
+  <p class="apology">Xin lỗi vì làm mất thời gian của em 😔</p>
+  <button onclick="stickerBurst()">Bấm vào đây nè 😘</button>
+
+  <!-- Nhạc tự động -->
+  <audio autoplay loop>
+    <source src="https://docs.google.com/uc?export=download&id=1jvE6S0dFAr_GbmUeUuV3nAiErPq9hN1F" type="audio/mpeg">
+  </audio>
+
+  <canvas id="snow"></canvas>
+
+  <script>
+    // Hiệu ứng tuyết rơi
+    let canvas = document.getElementById("snow");
+    let ctx = canvas.getContext("2d");
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let flakes = [];
+
+    function Snowflake(x, y, radius, speed) {
+      this.x = x;
+      this.y = y;
+      this.radius = radius;
+      this.speed = speed;
+      this.update = function() {
+        this.y += this.speed;
+        if (this.y > canvas.height) {
+          this.y = 0;
+          this.x = Math.random() * canvas.width;
+        }
+      };
+      this.draw = function() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "white";
+        ctx.fill();
+      };
+    }
+
+    function createSnowflakes() {
+      for (let i = 0; i < 100; i++) {
+        flakes.push(new Snowflake(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 4 + 1, Math.random() * 3 + 1));
+      }
+    }
+
+    function animateSnow() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let flake of flakes) {
+        flake.update();
+        flake.draw();
+      }
+      requestAnimationFrame(animateSnow);
+    }
+
+    createSnowflakes();
+    animateSnow();
+
+    // Sticker Tonton Friends bay lên
+    function createSticker(x, y) {
+      const img = document.createElement("img");
+      img.src = "Its Okay Bunny Sticker by Tonton Friends.gif"; // đổi sang đường dẫn sticker của bạn
+      img.classList.add("sticker");
+      img.style.left = x + "px";
+      img.style.top = y + "px";
+      document.body.appendChild(img);
+
+      setTimeout(() => {
+        img.style.transform = "translateY(-200px)";
+        img.style.opacity = "0";
+      }, 100);
+
+      setTimeout(() => {
+        img.remove();
+      }, 2100);
+    }
+
+    // Khi bấm nút
+    function stickerBurst() {
+      for (let i = 0; i < 5; i++) {
+        setTimeout(() => {
+          createSticker(Math.random() * window.innerWidth, window.innerHeight - 100);
+        }, i * 200);
+      }
+    }
+
+    // Khi click màn hình
+    document.addEventListener("click", (e) => {
+      createSticker(e.clientX, e.clientY);
+    });
+
+    // Cập nhật kích thước khi thay đổi màn hình
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+</body>
+</html>
